@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import ru.akirakozov.sd.refactoring.utils.prepareProductTable
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.sql.DriverManager
@@ -22,18 +23,7 @@ class AddProductServletTest {
 
     @BeforeEach
     fun setUp() {
-        DriverManager.getConnection(DB_URL).use { connection ->
-            connection
-                .prepareStatement("DROP TABLE IF EXISTS PRODUCT")
-                .execute()
-
-            val sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
-                    "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    " NAME           TEXT    NOT NULL, " +
-                    " PRICE          INT     NOT NULL)"
-            connection.prepareStatement(sql)
-                .execute()
-        }
+        prepareProductTable(DB_URL)
         given { response.writer }.willReturn(PrintWriter(writer))
     }
 
