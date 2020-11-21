@@ -2,6 +2,7 @@ package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.dao.ProductDao;
 import ru.akirakozov.sd.refactoring.entity.Product;
+import ru.akirakozov.sd.refactoring.enums.QueryCommand;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +22,9 @@ public class QueryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String command = request.getParameter("command");
+        final String command = request.getParameter("command");
 
-        if ("max".equals(command)) {
+        if (QueryCommand.MAX.getCommand().equals(command)) {
             try {
                 response.getWriter().println("<html><body>");
                 response.getWriter().println("<h1>Product with max price: </h1>");
@@ -37,7 +38,7 @@ public class QueryServlet extends HttpServlet {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else if ("min".equals(command)) {
+        } else if (QueryCommand.MIN.getCommand().equals(command)) {
             try {
                 response.getWriter().println("<html><body>");
                 response.getWriter().println("<h1>Product with min price: </h1>");
@@ -50,7 +51,7 @@ public class QueryServlet extends HttpServlet {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else if ("sum".equals(command)) {
+        } else if (QueryCommand.SUM.getCommand().equals(command)) {
             try {
                 response.getWriter().println("<html><body>");
                 response.getWriter().println("Summary price: ");
@@ -60,7 +61,7 @@ public class QueryServlet extends HttpServlet {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else if ("count".equals(command)) {
+        } else if (QueryCommand.COUNT.getCommand().equals(command)) {
             try {
                 response.getWriter().println("<html><body>");
                 response.getWriter().println("Number of products: ");
