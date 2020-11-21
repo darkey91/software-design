@@ -3,6 +3,7 @@ package ru.akirakozov.sd.refactoring;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import ru.akirakozov.sd.refactoring.dao.ProductDao;
 import ru.akirakozov.sd.refactoring.servlet.AddProductServlet;
 import ru.akirakozov.sd.refactoring.servlet.GetProductsServlet;
 import ru.akirakozov.sd.refactoring.servlet.QueryServlet;
@@ -15,6 +16,8 @@ import java.sql.Statement;
  * @author akirakozov
  */
 public class Main {
+    private static final String DB_URL = "jdbc:sqlite:test.db";
+
     public static void main(String[] args) throws Exception {
         try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
             String sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
@@ -33,9 +36,11 @@ public class Main {
         context.setContextPath("/");
         server.setHandler(context);
 
-        context.addServlet(new ServletHolder(new AddProductServlet()), "/add-product");
-        context.addServlet(new ServletHolder(new GetProductsServlet()),"/get-products");
-        context.addServlet(new ServletHolder(new QueryServlet()),"/query");
+        final ProductDao productDao = new ProductDao(DB_URL);
+
+        context.addServlet(new ServletHolder(new AddProductServlet(productDao)), "/add-product");
+        context.addServlet(new ServletHolder(new GetProductsServlet(productDao)), "/get-products");
+        context.addServlet(new ServletHolder(new QueryServlet(productDao)), "/query");
 
         server.start();
         server.join();

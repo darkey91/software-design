@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import ru.akirakozov.sd.refactoring.dao.ProductDao
 import ru.akirakozov.sd.refactoring.utils.prepareProductTable
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -17,8 +18,8 @@ class GetProductServletTest {
     val response = mock<HttpServletResponse>()
 
     val writer: StringWriter = StringWriter()
-    val servlet = GetProductsServlet()
-
+    val productDao = ProductDao(DB_URL)
+    val servlet = GetProductsServlet(productDao)
 
     @BeforeEach
     fun setUp() {
