@@ -30,44 +30,43 @@ public class QueryServlet extends HttpServlet {
                 ? QueryCommand.valueOf(commandStr.toUpperCase())
                 : QueryCommand.UNKNOWN;
 
-        switch (command) {
-            case MAX: {
-                htmlBuilder.firstHeader("Product with max price: ");
-                Optional.ofNullable(productDao.maxByPrice())
-                        .ifPresent(product ->
-                                htmlBuilder.breakLine(product.getName() + "\t" + product.getPrice()));
-                break;
-            }
-            case MIN: {
-                htmlBuilder.firstHeader("Product with min price: ");
-                Optional.ofNullable(productDao.minByPrice())
-                        .ifPresent(product ->
-                                htmlBuilder.breakLine(product.getName() + "\t" + product.getPrice()));
-                break;
-            }
-            case SUM: {
-                final long sum = productDao.sum();
-                htmlBuilder
-                        .line("Summary price: ")
-                        .line(Long.toString(sum));
-                break;
-            }
-            case COUNT: {
-                final long totalCount = productDao.countAll();
-                htmlBuilder
-                        .line("Number of products: ")
-                        .line(Long.toString(totalCount));
-                break;
-            }
-            default:
-                responseContent = "Unknown command: " + commandStr;
-        }
-
-        if (responseContent == null)
-            responseContent = htmlBuilder.toString();
-
-
         try {
+            switch (command) {
+                case MAX: {
+                    htmlBuilder.firstHeader("Product with max price: ");
+                    Optional.ofNullable(productDao.maxByPrice())
+                            .ifPresent(product ->
+                                    htmlBuilder.breakLine(product.getName() + "\t" + product.getPrice()));
+                    break;
+                }
+                case MIN: {
+                    htmlBuilder.firstHeader("Product with min price: ");
+                    Optional.ofNullable(productDao.minByPrice())
+                            .ifPresent(product ->
+                                    htmlBuilder.breakLine(product.getName() + "\t" + product.getPrice()));
+                    break;
+                }
+                case SUM: {
+                    final long sum = productDao.sum();
+                    htmlBuilder
+                            .line("Summary price: ")
+                            .line(Long.toString(sum));
+                    break;
+                }
+                case COUNT: {
+                    final long totalCount = productDao.countAll();
+                    htmlBuilder
+                            .line("Number of products: ")
+                            .line(Long.toString(totalCount));
+                    break;
+                }
+                default:
+                    responseContent = "Unknown command: " + commandStr;
+            }
+
+            if (responseContent == null)
+                responseContent = htmlBuilder.toString();
+
             response.getWriter().println(responseContent);
         } catch (final Exception exception) {
             throw new RuntimeException();
