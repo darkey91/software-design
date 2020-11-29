@@ -20,13 +20,13 @@ public class AddProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String name = request.getParameter("name");
-        int price = Integer.parseInt(request.getParameter("price"));
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        final String name = request.getParameter(Product.NAME);
+        final int price = Integer.parseInt(request.getParameter(Product.PRICE));
 
         try {
             productDao.save(new Product(name, price));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
 
