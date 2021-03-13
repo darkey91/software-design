@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>Login</title>
+<!--    <link rel="stylesheet" href="./style.css">-->
+</head>
+<body>
+<main>
+    <div>
+        <h3>Login</h3>
+        <form th:object="${user}" method="POST" th:action="@{/login}">
+            <label for="user_username">Username</label>
+            <input id="user_username" type="text" th:field="*{username}" minlength="3" maxlength="24"/>
+            <input id="login" type="submit" th:value="login">
+        </form>
+    </div>
+</main>
+</body>
+</html>

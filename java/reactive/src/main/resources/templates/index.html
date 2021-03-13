@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>Index</title>
+</head>
+<body>
+<main>
+    <div>
+        <h3 th:text="'Hello, ' + (${username == null} ? 'Stranger' : ${username}) + '!'"></h3>
+    </div>
+
+    <div th:with="user_present = ${username != null}">
+        <nav>
+        <div th:if="${user_present}">
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+        <div th:unless="${user_present}">
+            <a th:href="@{/login}">Login</a> | <a th:href="@{/register}">Register</a>
+        </div>
+        </nav>
+    </div>
+</main>
+</body>
+</html>
