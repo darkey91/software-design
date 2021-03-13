@@ -10,7 +10,9 @@ import ru.itmo.dkudaiberdieva.design.reactive.repository.ProductRepository
 import ru.itmo.dkudaiberdieva.design.reactive.repository.UserRepository
 
 @Configuration
-@EnableReactiveMongoRepositories
+@EnableReactiveMongoRepositories(
+    basePackageClasses = [UserRepository::class, ProductRepository::class]
+)
 class MongoConfig : AbstractReactiveMongoConfiguration() {
 
     override fun getDatabaseName() = "test_db"

@@ -18,7 +18,7 @@
             <select required name="currency" id="newUser_currency">
                 <option value='' disabled selected>Preferred Currency: </option>
                 <option th:each="currencyOption : ${T(ru.itmo.dkudaiberdieva.design.reactive.enums.Currency).values()}"
-                        th:value="${currency}" th:text="${currencyOption}"></option>
+                        th:value="${currencyOption}" th:text="${currencyOption}"></option>
             </select>
             <input id="register" type="submit" th:value="register">
         </form>

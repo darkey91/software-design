@@ -1,16 +1,12 @@
 package ru.itmo.dkudaiberdieva.design.reactive.handler
 
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.BodyExtractor
-import org.springframework.web.reactive.function.BodyExtractors
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.server.WebSession
 import reactor.core.publisher.Mono
-import reactor.kotlin.adapter.rxjava.toSingle
 import reactor.kotlin.core.publisher.switchIfEmpty
-import reactor.kotlin.core.publisher.toMono
 import ru.itmo.dkudaiberdieva.design.reactive.entity.User
 import ru.itmo.dkudaiberdieva.design.reactive.enums.Currency
 import ru.itmo.dkudaiberdieva.design.reactive.repository.UserRepository
@@ -30,13 +26,18 @@ class UserHandler(private val userRepository: UserRepository) {
                 .switchIfEmpty(
                     Mono.defer {
                         userRepository.save(
-                            User(username = username, name = name, currency = Currency.valueOf(user["currency"]!!))
+                            User(
+                                username = username,
+                                name = name,
+                                currency = Currency.valueOf(user["currency"]!!)
+                            )
                         )
                     }
-                )
-            ok().render("index")
+                ).flatMap { ok().render("index") }
         }
-    }.onErrorResume { e -> displayErrorView(e.message.toString()) }
+    }.onErrorResume { e ->
+        displayErrorView(e.cause.toString())
+    }
 
     fun loginView(request: ServerRequest): Mono<ServerResponse> = displayView("login", mapOf("user" to User()))
 
@@ -52,7 +53,7 @@ class UserHandler(private val userRepository: UserRepository) {
                 }
                 ok().render("index", mapOf("username" to user.username))
             }
-        }.onErrorResume { e -> displayErrorView(e.message.toString()) }
+        }.onErrorResume { e -> displayErrorView(e.cause.toString()) }
     }
 
     fun logout(request: ServerRequest): Mono<ServerResponse> =

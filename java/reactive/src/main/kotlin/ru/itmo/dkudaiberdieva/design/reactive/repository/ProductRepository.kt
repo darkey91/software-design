@@ -6,6 +6,6 @@ import reactor.core.publisher.Flux
 import ru.itmo.dkudaiberdieva.design.reactive.entity.Product
 
 @Repository
-interface ProductRepository: ReactiveMongoRepository<Product, Long> {
-    fun findByUserId(userId: Long): Flux<Product>
+interface ProductRepository: ReactiveMongoRepository<Product, String> {
+    fun findByUserId(userId: String): Flux<Product>
 }
