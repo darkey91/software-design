@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>Add new product</title>
+</head>
+<body>
+<main>
+    <div>
+        <h3>Add new product</h3>
+        <form th:object="${newProduct}" method="POST" th:action="@{/save/product}">
+            <label for="newProduct_name">Name</label>
+            <input required id="newProduct_name" type="text" th:field="*{name}" minlength="3" maxlength="24"/>
+            <label for="newProduct_price">Price</label>
+            <input required id="newProduct_price" type="number" th:field="*{price}" min="0" max="10000000"/>
+
+            <label for="newProduct_currency"></label>
+            <select required name="currency" id="newProduct_currency">
+                <option value='' disabled selected>Currency: </option>
+                <option th:each="currencyOption : ${T(ru.itmo.dkudaiberdieva.design.reactive.enums.Currency).values()}"
+                        th:value="${currencyOption}" th:text="${currencyOption}"></option>
+            </select>
+            <input id="save_product" type="submit" th:value="add">
+        </form>
+    </div>
+</main>
+</body>
+</html>

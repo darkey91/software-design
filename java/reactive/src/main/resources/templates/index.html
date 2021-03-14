@@ -12,7 +12,7 @@
     <div th:with="user_present = ${username != null}">
         <nav>
         <div th:if="${user_present}">
-            <a th:href="@{/logout}">Logout</a> | <a th:href="@{/products}">Logout</a>
+            <a th:href="@{/logout}">Logout</a> | <a th:href="@{/products}">Products</a>
         </div>
         <div th:unless="${user_present}">
             <a th:href="@{/login}">Login</a> | <a th:href="@{/register}">Register</a>

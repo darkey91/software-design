@@ -10,6 +10,6 @@ data class Product(
     @Id @Field("_id") var id: String? = null,
     var name: String? = null,
     var userId: String? = null,   //userId - user's id who added this product
-    var price: Long? = null,
+    var price: Double? = null,
     var currency: Currency? = null
 )
