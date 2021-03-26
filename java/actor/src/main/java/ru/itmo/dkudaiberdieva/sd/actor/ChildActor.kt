@@ -24,11 +24,11 @@ class ChildActor : AbstractActor() {
 
     override fun createReceive(): Receive = ReceiveBuilder()
         .match(String::class.java) { url -> sendRequest(url) }
-        .matchAny { a -> println(a) }
         .build()
 
     private fun sendRequest(url: String) {
         log.debug("Send request: $url")
+        val sender = sender
         http.singleRequest(HttpRequest.create(url))
             .thenCompose { res ->
                 res.entity().dataBytes
@@ -37,11 +37,11 @@ class ChildActor : AbstractActor() {
             }.handle { res, e ->
                 if (res != null) {
                     log.debug("Response received :$res")
-                    context.parent.tell(res, self)
-                    context.stop(self)
+                    sender.tell(res, self)
                 } else {
                     log.error(e.toString())
                 }
+                context.stop(self)
             }
     }
 }

@@ -5,15 +5,12 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.itmo.dkudaiberdieva.sd.engine.Engine;
 
-import java.io.IOException;
-import java.net.URI;
-import kotlin.random.Random
-
-class DummyHttpHandler(private val engine: Engine) : HttpHandler {
+class HttpHandler(private val engine: Engine) : HttpHandler {
 
     private val mapper = ObjectMapper()
 
     companion object {
+        const val STICK = "stick"
         const val STICK_GOOGLE = "stickG"
         const val STICK_YANDEX = "stickY"
         const val STICK_BING = "stickB"
@@ -38,6 +35,7 @@ class DummyHttpHandler(private val engine: Engine) : HttpHandler {
         query = query.takeLast(query.length - 2)
 
         when {
+            STICK == query -> Thread.sleep(STICK_TIME_MS)
             STICKS.contains(query) && (query.last() == engine.name.firstOrNull()) -> {
                 Thread.sleep(STICK_TIME_MS)
             }

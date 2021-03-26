@@ -17,7 +17,6 @@ fun main() {
         val resultConsumer = CompletableFuture<Map<String, List<String>>>()
         val actor = system.actorOf(Props.create(MainActor::class.java, resultConsumer), "mainActor")
         actor.tell(SearchRequest(query), ActorRef.noSender())
-//        val futureResult: Future<Any> = ask(actor, SearchRequest(query), Timeout(duration))
         val result = resultConsumer.get(8, TimeUnit.SECONDS)
         println(result)
     }

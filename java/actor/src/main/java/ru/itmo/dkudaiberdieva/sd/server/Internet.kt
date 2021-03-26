@@ -1,27 +1,23 @@
 package ru.itmo.dkudaiberdieva.sd.server
 
 import ru.itmo.dkudaiberdieva.sd.engine.ENGINES
-import ru.itmo.dkudaiberdieva.sd.engine.Engine
-
 import java.io.IOException
-import java.lang.Exception
-import java.util.ArrayList
-
+import java.util.*
 
 
 fun main() {
-    val servers = ArrayList<DummyServer>()
+    val servers = ArrayList<Server>()
 
     for (engine in ENGINES) {
         try {
-            servers.add(DummyServer(engine))
+            servers.add(Server(engine))
         } catch (e: IOException) {
             e.printStackTrace()
             return
         }
     }
     try {
-        servers.forEach(DummyServer::start)
+        servers.forEach(Server::start)
         while (true) { }
     } finally {
         servers.forEach { dummyServer ->

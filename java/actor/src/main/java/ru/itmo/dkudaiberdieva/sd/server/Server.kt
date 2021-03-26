@@ -5,11 +5,11 @@ import ru.itmo.dkudaiberdieva.sd.engine.Engine
 
 import java.net.InetSocketAddress
 
-class DummyServer(private val engine: Engine) : AutoCloseable {
+class Server(private val engine: Engine) : AutoCloseable {
     private val server: HttpServer = HttpServer.create(InetSocketAddress(engine.host, engine.port), 0)
 
     fun start() {
-        server.createContext("/", DummyHttpHandler(engine))
+        server.createContext("/", HttpHandler(engine))
         server.start()
     }
 

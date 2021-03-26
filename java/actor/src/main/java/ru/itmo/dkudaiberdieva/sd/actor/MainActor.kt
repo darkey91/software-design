@@ -31,11 +31,12 @@ class MainActor(private val resultConsumer: CompletableFuture<Map<String, List<S
         ENGINES.forEach { engine ->
             val url = "http://${engine.host}:${engine.port}?q=${request.query}"
             val engineActorName = "${engine.name}_actor"
-            val engineActor = context.actorOf(Props.create(ChildActor::class.java), engineActorName)
-            engineActor.tell(url, self)
+            val engineActor = context().actorOf(Props.create(ChildActor::class.java), engineActorName)
+            context.watch(engineActor)
+            engineActor.tell(url, self())
         }
-
-        context.receiveTimeout = TIMEOUT
+        val a = this.self
+//        context.receiveTimeout = TIMEOUT
     }
 
     private fun retrieveResponse(response: SearchEngineResponse) {
@@ -44,7 +45,6 @@ class MainActor(private val resultConsumer: CompletableFuture<Map<String, List<S
         if (awaitingResultAmount == result.size) {
             context.cancelReceiveTimeout()
             sendResult()
-            context.stop(self)
         }
     }
 
